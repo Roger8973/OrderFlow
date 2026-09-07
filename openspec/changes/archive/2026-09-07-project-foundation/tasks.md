@@ -39,5 +39,5 @@
 
 ## 8. CI Pipeline
 
-- [ ] 8.1 Add `.github/workflows/ci.yml` with a PostgreSQL service container, running `dotnet restore`, `dotnet build`, and `dotnet test` on push/PR to `main`/`develop`, and verify the workflow runs green on a pushed branch.
-- [ ] 8.2 Confirm the CI run executes the health-check integration tests from Section 7 against the workflow's PostgreSQL service container and that they pass in that environment.
+- [x] 8.1 Add `.github/workflows/ci.yml` with a PostgreSQL service container, running `dotnet restore`, `dotnet build`, and `dotnet test` on push/PR to `main`/`develop`, and verify the workflow runs green on a pushed branch.
+- [x] 8.2 Confirm the CI run executes the health-check integration tests from Section 7 against the workflow's PostgreSQL service container and that they pass in that environment.
