@@ -10,7 +10,10 @@ public static class DatabaseMigrator
 
     public static void Migrate(string connectionString)
     {
-        using var lockConnection = new NpgsqlConnection(connectionString);
+        // Pooling is disabled so disposing really closes the session, which releases the advisory lock.
+        // With pooling, the connection would return to the pool still holding the lock and block other hosts.
+        var lockConnectionString = new NpgsqlConnectionStringBuilder(connectionString) { Pooling = false }.ConnectionString;
+        using var lockConnection = new NpgsqlConnection(lockConnectionString);
         lockConnection.Open();
 
         using (var acquire = new NpgsqlCommand("SELECT pg_advisory_lock(@key)", lockConnection))
@@ -19,7 +22,7 @@ public static class DatabaseMigrator
             acquire.ExecuteNonQuery();
         }
 
-        // The session-level lock is released when lockConnection is disposed.
+        // The session-level lock is released when lockConnection is closed on dispose.
         RunUpgrade(connectionString);
     }
 
