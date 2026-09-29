@@ -1,6 +1,29 @@
 @OrderFlow.Api_HostAddress = http://localhost:5164
 
-GET {{OrderFlow.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Create a customer (valid) - 201
+POST {{OrderFlow.Api_HostAddress}}/customers
+Content-Type: application/json
 
-###
+{
+  "name": "Maria Silva",
+  "email": "maria@example.com",
+  "phone": "+55 11 99999-0000"
+}
+
+### Create a customer (invalid: blank name, malformed email) - 400
+POST {{OrderFlow.Api_HostAddress}}/customers
+Content-Type: application/json
+
+{
+  "name": "   ",
+  "email": "not-an-email"
+}
+
+### Create a customer (duplicate email; run the valid request first) - 409
+POST {{OrderFlow.Api_HostAddress}}/customers
+Content-Type: application/json
+
+{
+  "name": "Maria Duplicada",
+  "email": "Maria@Example.com"
+}

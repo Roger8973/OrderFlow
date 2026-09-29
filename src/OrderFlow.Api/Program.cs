@@ -1,5 +1,7 @@
 using OrderFlow.Api.ExceptionHandling;
 using OrderFlow.Api.HealthChecks;
+using OrderFlow.Application;
+using OrderFlow.Infrastructure;
 using OrderFlow.Infrastructure.Database;
 using Serilog;
 using Serilog.Formatting.Compact;
@@ -21,6 +23,9 @@ builder.Services.AddProblemDetails();
 
 var connectionString = builder.Configuration.GetConnectionString("Postgres")
     ?? throw new InvalidOperationException("Connection string 'Postgres' is not configured.");
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(connectionString);
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(sp => sp.GetRequiredService<IConfiguration>().GetConnectionString("Postgres")!, name: "postgresql");
