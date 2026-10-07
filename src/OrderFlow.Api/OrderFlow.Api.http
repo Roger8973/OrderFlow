@@ -27,3 +27,12 @@ Content-Type: application/json
   "name": "Maria Duplicada",
   "email": "Maria@Example.com"
 }
+
+### Get a customer by id (replace with an id returned by POST /customers) - 200
+GET {{OrderFlow.Api_HostAddress}}/customers/00000000-0000-0000-0000-000000000001
+
+### Get a customer by id (well-formed GUID, unknown customer) - 404
+GET {{OrderFlow.Api_HostAddress}}/customers/00000000-0000-0000-0000-000000000000
+
+### Get a customer by id (not a GUID) - 404
+GET {{OrderFlow.Api_HostAddress}}/customers/not-a-guid

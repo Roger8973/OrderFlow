@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using OrderFlow.Application.Customers;
+using OrderFlow.Application.Customers.Queries;
 using OrderFlow.Infrastructure.Customers;
 
 namespace OrderFlow.Infrastructure;
@@ -11,6 +12,7 @@ public static class DependencyInjection
     {
         services.AddSingleton(NpgsqlDataSource.Create(connectionString));
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ICustomerQueries, CustomerQueries>();
 
         return services;
     }

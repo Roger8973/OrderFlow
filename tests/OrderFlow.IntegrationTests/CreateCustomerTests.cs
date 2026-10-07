@@ -30,6 +30,20 @@ public class CreateCustomerTests(WebApplicationFactory<Program> factory) : IClas
     }
 
     [Fact]
+    public async Task Post_ReturnsLocationHeader_PointingAtCreatedCustomer()
+    {
+        using var client = factory.CreateClient();
+
+        var response = await client.PostAsJsonAsync("/customers", new { name = "Maria", email = NewEmail() });
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        using var body = await ReadJsonAsync(response);
+        var id = body.RootElement.GetProperty("id").GetGuid();
+        Assert.NotNull(response.Headers.Location);
+        Assert.Equal($"/customers/{id}", response.Headers.Location.AbsolutePath);
+    }
+
+    [Fact]
     public async Task Post_Returns201WithNullPhone_WhenPhoneOmitted()
     {
         using var client = factory.CreateClient();
